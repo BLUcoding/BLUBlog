@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>归档</title>
+    <th:block th:replace="_fragments :: somehead"></th:block>
+</head>
+
+<body>
+    
+    <nav th:replace="_fragments :: navmenu(4)"></nav>
+
+    <div class="fluid container m-padded-tb-large">
+        <div class="ui container">
+            <!-- 头部 -->
+            <div class="ui top attached segment">
+                <div class="ui grid middle aligned two column">
+                    <div class="column">
+                        <h3 class="ui header teal">归档</h3>
+                    </div>
+                    <div class="right aligned column">
+                        共
+                        <h3 class="ui header orange m-inline-block m-text-thin" th:text="${blogCount}">114</h3>篇
+                    </div>
+                </div>
+            </div>
+
+			<th:block th:each="item : ${achiveMap}">
+				<h3 class="ui center aligned header" th:text="${item.key}">2020</h3>
+            	<div class="ui fluid vertical menu">
+                	<a th:href="@{/blog/{id}(id=${blog.id})}" target="_blank" class="item" th:each="blog : ${item.value}">
+                    	<span>
+                        	<i class="teal mini circle icon"></i> <span th:text="${blog.title}">文章标题1</span>
+                        	<div class="ui teal basic label m-padded-mini m-margin-left-tiny" th:text="${#dates.format(blog.updateTime,'yyyy-MM-dd')}">2020-07-23</div>
+                        	<span class="ui m-margin-left-tiny">
+								<i class="eye  icon"></i><span th:text="${blog.views}">5787</span>
+							</span>
+                        	<span class="ui m-margin-left-tiny" th:if="${blog.recommend}">
+								<i class="thumbs up orange outline icon"></i> <span style="color: orange">推荐</span>
+							</span>
+                    	</span>
+                		<div class="ui label m-padded-mini m-margin-left-tiny" th:classappend="${blog.flag=='原创'} ? 'green' : 'orange'" th:text="${blog.flag}">原创</div>
+                	</a>
+            	</div>
+			</th:block>
+
+        </div>
+    </div>
+    <br>
+    <br>
+    
+    <footer th:replace="_fragments :: footer" ></footer>
+
+    <script>
+        $('.m-menu-toggle').click(function() {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>关于我</title>
+    <th:block th:replace="_fragments :: somehead"></th:block>
+</head>
+
+<body>
+    
+    <nav th:replace="_fragments :: navmenu(5)"></nav>
+
+    <div class="fluid container m-padded-tb-large">
+        <div class="ui container">
+            <div class="ui stackable grid">
+                <div class="eleven wide column">
+                    <div class="ui segment">
+                        <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/imgad/pic/item/0df431adcbef76095f29f49426dda3cc7cd99e9e.jpg" alt="" class="ui rounded image" style="width: 800px; height: 600px;">
+                    </div>
+
+                </div>
+                <div class="five wide column">
+                    <div class="ui top attached segment">
+                        <div class="ui header">关于我</div>
+                    </div>
+                    <div class="ui attached segment">
+                        <p class="m-text-spaced">
+                            你好，我是BLU，我是一个菜鸡，这是我的个人博客，谢谢你的关注。
+                        </p>
+                    </div>
+                    <div class="ui attached segment">
+                        <div class="ui orange header">个人兴趣</div>
+                        <div class="ui orange label m-margin-tb-tiny">编程</div>
+                        <div class="ui orange label m-margin-tb-tiny">写作</div>
+                        <div class="ui orange label m-margin-tb-tiny">日语</div>
+                        <div class="ui orange label m-margin-tb-tiny">旅游</div>
+                        <div class="ui orange label m-margin-tb-tiny">游戏</div>
+                        <div class="ui orange label m-margin-tb-tiny">日语</div>
+                        <div class="ui orange label m-margin-tb-tiny">旅游</div>
+                        <div class="ui orange label m-margin-tb-tiny">游戏</div>
+                    </div>
+                    <div class="ui attached segment">
+                        <div class="ui orange header">技术栈</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">Java</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">JavaScript</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">Spring</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">SpringMVC</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">MyBatis</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">MyBatis Plus</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">MySQL</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">SpringBoot</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">SpringCloud</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">Hadoop</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">WebService</div>
+                        <div class="ui orange basic label m-margin-tb-tiny">...</div>
+                    </div>
+                    <div class="ui bottom attached segment">
+                        <a href="#" class="ui circular icon button"><i class="github icon"></i></a>
+                        <a href="#" class="ui wechat circular icon button"><i class="weixin icon"></i></a>
+                        <a href="#" class="ui QQ circular icon button" data-content="2711978737" data-position="bottom center"><i class="qq icon"></i></a>
+                    </div>
+
+                    <div class="ui wechatQR flowing popup transition hidden">
+                        <img src="../static/images/wechat.jpg" th:src="@{/images/wechat.jpg}" alt="" class="ui rounded image" width="100px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    
+    <footer th:replace="_fragments :: footer" ></footer>
+
+    <script>
+        $('.m-menu-toggle').click(function() {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+        $('.QQ').popup();
+        $('.wechat').popup({
+            popup: $('.wechatQR.popup'),
+            on: 'hover',
+            position: 'bottom center'
+        })
+    </script>
+</body>
+
+</html>

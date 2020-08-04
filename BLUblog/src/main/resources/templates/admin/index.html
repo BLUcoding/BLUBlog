@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- saved from url=(0013)about:internet -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>博客管理</title>
+    <th:block th:replace="admin/_fragments :: somehead"></th:block>
+</head>
+
+<body>
+    
+    <nav th:replace="admin/_fragments :: backnav(1)"></nav>
+
+
+    <div class="fluid container m-padded-tb-large">
+        <div class="ui container">
+            <div class="ui success large message">
+            	<h3>Hi,</h3>
+            	<p><span th:text="${session.user.nickname}"></span>, 欢迎登录！</p>
+            </div>
+            
+            <img src="https://ss1.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/imgad/pic/item/0df431adcbef76095f29f49426dda3cc7cd99e9e.jpg" alt="" class="ui rounded image" style="width: 1000px; height: 400px;">
+        </div>
+    </div>
+    <br>
+    <br>
+    
+    <footer th:replace="admin/_fragments :: footer" ></footer>
+
+    <script>
+        $('.m-menu-toggle').click(function() {
+            $('.m-item').toggleClass('m-mobile-hide');
+        });
+
+        $('.ui.dropdown').dropdown({
+            on: 'hover'
+        });
+    </script>
+</body>
+
+</html>

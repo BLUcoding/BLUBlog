@@ -1,0 +1,92 @@
+package com.blu.service.Impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.blu.dao.CommentRepository;
+import com.blu.entity.comment;
+import com.blu.service.CommentService;
+
+@Service
+public class CommentServiceImpl implements CommentService {
+	
+	@Autowired
+	private CommentRepository commentRepository;
+
+	@Override
+	public List<comment> listCommentByBlogId(Long blogId) {
+		Sort sort = Sort.by(Sort.Direction.ASC, "createTime");
+		List<comment> comments = commentRepository.findByBlogIdAndParentCommentNull(blogId, sort);
+		List<comment> list = eachComment(comments);
+		return list;
+	}
+
+	@Transactional
+	@Override
+	public comment saveComment(comment comment) {
+		Long parentCommentId = comment.getParentComment().getId();
+		if (parentCommentId != -1) {
+			comment.setParentComment(commentRepository.getOne(parentCommentId));
+		} else {
+			comment.setParentComment(null);
+		}
+		comment.setCreateTime(new Date());
+		return commentRepository.save(comment);
+	}
+	
+	/**
+	 * 循环每个顶级的评论节点
+	 */
+	private List<comment> eachComment(List<comment> comments) {
+		//用commentsView复制一份从数据库中查到的顶级评论集合，避免修改影响到数据库。
+		List<comment> commentsView = new ArrayList<>();
+		for (comment comment : comments) {
+			comment c = new comment();
+			BeanUtils.copyProperties(comment, c);
+			commentsView.add(c);
+		}
+		//合并评论的各层子代到第一级子代集合中
+		combineChildren(commentsView);
+		return commentsView;
+	}
+	
+	private void combineChildren(List<comment> comments) {
+		
+		for (comment comment : comments) {
+			List<comment> replys1 = comment.getReplyComments();
+			for(comment reply1 : replys1) {
+				//循环迭代，找出子代，存放在tempReplys中
+				recursively(reply1);
+			}
+			//修改顶级节点的reply集合为迭代处理后的集合
+			comment.setReplyComments(tempReplys);
+			//清除临时存放区
+			tempReplys = new ArrayList<>();
+		}
+	}
+	
+	//存放迭代找出的所有子代的集合
+	private List<comment> tempReplys = new ArrayList<>();
+	
+	private void recursively(comment comment) {
+		//顶节点添加到临时存放集合
+		tempReplys.add(comment);
+		if(comment.getReplyComments().size()>0) {
+			List<comment> replys = comment.getReplyComments();
+			for (comment reply : replys) {
+				tempReplys.add(reply);
+				if(reply.getReplyComments().size()>0) {
+					recursively(reply);
+				}
+			}
+		}
+	}
+
+}
